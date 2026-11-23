@@ -1,0 +1,17 @@
+{
+  "name": "clinemm-codex-fixture",
+  "version": "1.0.0",
+  "private": false,
+  "description": "Intentionally RED TypeScript fixture for verifying Codex-supervised ClineMM coding",
+  "type": "module",
+  "engines": {
+    "node": ">=22.6.0"
+  },
+  "scripts": {
+    "test": "node --disable-warning=ExperimentalWarning --experimental-strip-types --test tests/*.test.mjs",
+    "test:expiry": "node --disable-warning=ExperimentalWarning --experimental-strip-types --test tests/expiry.test.mjs",
+    "test:scheduling": "node --disable-warning=ExperimentalWarning --experimental-strip-types --test tests/scheduling.test.mjs",
+    "test:events": "node --disable-warning=ExperimentalWarning --experimental-strip-types --test tests/events.test.mjs"
+  },
+  "license": "MIT"
+}
