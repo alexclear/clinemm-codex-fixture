@@ -17,7 +17,7 @@ export interface RunEvent {
 
 /** A job is expired at its deadline, not only after the deadline. */
 export function isExpired(job: Job, nowMs: number): boolean {
-  return nowMs > job.expiresAtMs;
+  return nowMs >= job.expiresAtMs;
 }
 
 /**
@@ -28,10 +28,12 @@ export function isExpired(job: Job, nowMs: number): boolean {
 export function pickNextJob(jobs: readonly Job[], nowMs: number): Job | undefined {
   return jobs
     .filter((job) => job.availableAtMs <= nowMs && !isExpired(job, nowMs))
-    .sort((a, b) =>
-      a.priority - b.priority ||
-      a.createdAtMs - b.createdAtMs ||
-      a.id.localeCompare(b.id),
+    .slice()
+    .sort(
+      (a, b) =>
+        b.priority - a.priority ||
+        a.createdAtMs - b.createdAtMs ||
+        a.id.localeCompare(b.id),
     )[0];
 }
 
@@ -43,7 +45,11 @@ export function appendRunEvent(
   events: readonly RunEvent[],
   next: RunEvent,
 ): readonly RunEvent[] {
-  if (events.some((event) => event.eventId === next.eventId)) {
+  if (
+    events.some(
+      (event) => event.runId === next.runId && event.eventId === next.eventId,
+    )
+  ) {
     return events;
   }
   return [...events, next];
